@@ -95,20 +95,175 @@ EWha
 
 <details>
 <summary>메인</summary>
-
 <br>
 
-```js
-
-```
-
-설명
+### **배너 슬라이드 쇼**
 
 ```js
-
+const rollingVisualBanner = () => {
+   $visualBannerBox.style.transition = '0.4s';
+   if (visualPrevCnt === 2 && visualCurrentCnt === 0) {
+      $visualBannerBox.style.left = '-400%';
+      setTimeout(() => {
+         $visualBannerBox.style.transition = '0s';
+         $visualBannerBox.style.left = `${slideArr[visualCurrentCnt]}`;
+      }, 400);
+   } else if (visualPrevCnt === 0 && visualCurrentCnt === 2) {
+      $visualBannerBox.style.left = '0';
+      setTimeout(() => {
+         $visualBannerBox.style.transition = '0s';
+         $visualBannerBox.style.left = `${slideArr[visualCurrentCnt]}`;
+      }, 400);
+   } else {
+      $visualBannerBox.style.left = `${slideArr[visualCurrentCnt]}`;
+   }
+   // 페이징
+   $visualPagingLi[visualPrevCnt].classList.remove('on');
+   $visualPagingLi[visualCurrentCnt].classList.add('on');
+   visualPrevCnt = visualCurrentCnt;
+};
 ```
 
-설명
+rollingVisualBanner 함수는 배너 슬라이드 쇼를 제어합니다. 이전/다음 버튼 클릭, 현재 배너 위치 업데이트, 페이지 버튼 작동 등을 처리합니다.
+실행/중지 버튼 클릭 이벤트를 처리합니다.
+
+### **실행/중지 버튼 이벤트 리스너**
+
+```js
+$visualActiveBtn.addEventListener('click', () => {
+   if (visualIsRolling) {
+      clearInterval(visualIntervalId);
+      $visualActiveBtn.children[0].classList.replace('xi-pause', 'xi-play');
+   } else {
+      visualIntervalId = setInterval(visualRolling, 6000);
+      $visualActiveBtn.children[0].classList.replace('xi-play', 'xi-pause');
+   }
+   visualIsRolling = !visualIsRolling;
+});
+```
+
+배너 슬라이드 쇼가 작동 중이면 중지하고, 중지되었다면 다시 작동하도록 제어합니다.
+
+### **이전/다음 버튼 이벤트 리스너**
+
+```js
+$visualPrevBtn.addEventListener('click', () => {
+   visualCurrentCnt = visualCurrentCnt <= 0 ? visualLen - 1 : visualCurrentCnt - 1;
+   rollingVisualBanner();
+   if (visualIsRolling) {
+      clearInterval(visualIntervalId);
+      visualIntervalId = setInterval(visualRolling, 6000);
+   }
+});
+
+$visualNextBtn.addEventListener('click', () => {
+   // ...
+});
+```
+
+각각 이전 또는 다음 배너로 전환하며 이동동안 자동 롤링이 작동 중이면 일시 중지하고 이동을 완료한 후 다시 시작하도록 합니다.
+하단 페이징 조작을 처리합니다.
+
+```js
+$visualPagingLi.forEach((item, idx) => {
+   item.addEventListener('click', () => {
+      visualCurrentCnt = idx;
+      rollingVisualBanner();
+      if (visualIsRolling) {
+         clearInterval(visualIntervalId);
+         visualIntervalId = setInterval(visualRolling, 6000);
+      }
+   });
+});
+```
+
+이 코드는 하단 페이징 조작을 처리합니다. 각 페이지 버튼을 클릭하면 해당 배너로 이동하며, 이동 동안 자동 롤링이 작동 중이면 일시 중지하고 이동을 완료한 후 다시 시작하도록 합니다.
+배너 슬라이드 쇼를 설정된 시간 간격(6000ms)으로 자동으로 롤링하도록 setInterval을 설정합니다.
+
+```js
+visualIntervalId = setInterval(visualRolling, 6000);
+```
+
+배너 슬라이드 쇼를 설정된 시간 간격(6000ms)으로 자동으로 롤링하도록 setInterval을 설정합니다.
+
+### **배너 롤링 및 페이징 업데이트**
+
+```js
+const bucheonNowRollingBanner = () => {
+   let num = 300;
+   if (bucheonNowPrevCnt === bucheonNowArr.length - 1 && bucheonNowCurrentCnt === 0) {
+      $bucheonNowRollingBox.style.transition = '0.4s';
+      $bucheonNowRollingBox.style.left = `${-bucheonNowArr[bucheonNowArr.length - 1] - num}px`;
+      // ...
+   } else if (bucheonNowPrevCnt === 0 && bucheonNowCurrentCnt === bucheonNowArr.length - 1) {
+      $bucheonNowRollingBox.style.transition = '0.4s';
+      $bucheonNowRollingBox.style.left = `${bucheonNowArr[0] - num}px`;
+      // ...
+   } else {
+      $bucheonNowRollingBox.style.transition = '0.4s';
+      $bucheonNowRollingBox.style.left = `${-bucheonNowArr[bucheonNowCurrentCnt]}px`;
+   }
+   $bucheonNowPagingLi.style.width = `${25 * (bucheonNowCurrentCnt + 1)}%`;
+   bucheonNowPrevCnt = bucheonNowCurrentCnt;
+};
+```
+
+이 함수는 배너를 롤링하고 페이징을 업데이트하는 기능을 구현합니다.
+
+### **배너 이전/다음 버튼 이벤트 리스너**
+
+```js
+const bucheonNowRolling = () => {
+   bucheonNowCurrentCnt = bucheonNowCurrentCnt >= bucheonNowArr.length - 1 ? 0 : bucheonNowCurrentCnt + 1;
+   bucheonNowRollingBanner();
+};
+const bucheonNowReverseRolling = () => {
+    ...
+   bucheonNowRollingBanner();
+};
+```
+
+이 함수는 다음/이전 배너로 이동하고, 롤링 배너 함수를 호출합니다.
+
+```js
+$bucheonNowNextBtn.addEventListener('click', bucheonNowRolling);
+$bucheonNowPrevBtn.addEventListener('click', bucheonNowReverseRolling);
+```
+
+다음과 이전 버튼을 클릭했을 때 각각 bucheonNowRolling과 bucheonNowReverseRolling 함수를 호출합니다.
+스크롤 이벤트를 처리해서 애니메이션을 실행합니다.
+
+### **스크롤 반응형 애니메이션**
+
+```js
+window.addEventListener('scroll', () => {
+   let scrollStandard = window.innerHeight + window.scrollY - $bucheonNowContent.offsetHeight / 2;
+   if (scrollStandard >= $bucheonNowContent.offsetTop && bucheonNowIsPlayed === false) {
+      $bucheonNowRollingBox.querySelectorAll('li').forEach(item => {
+         let startNum = 999;
+         let goalNum = parseInt(item.dataset.num);
+         let currentNum = parseInt(item.children[1].textContent);
+         let speed = 30;
+         let step = Math.ceil(Math.abs(startNum - goalNum) / 50);
+         let timer = setInterval(() => {
+            if (startNum <= goalNum) {
+               clearInterval(timer);
+               item.children[1].textContent = goalNum;
+            } else {
+               startNum -= step;
+               if (startNum < goalNum) {
+                  startNum = goalNum;
+               }
+               item.children[1].textContent = startNum;
+            }
+         }, speed);
+      });
+      bucheonNowIsPlayed = true;
+   }
+});
+```
+
+이 부분은 스크롤 이벤트를 감지하고, 반응형 애니메이션을 실행합니다. 스크롤 시 애니메이션의 시작과 목표 숫자가 점진적으로 변하며, 스크롤 위치가 적절한 위치에 도달하면 애니메이션이 한 번만 실행됩니다.
 
 <br>
 
@@ -145,7 +300,7 @@ $universityHistoryTab[1].addEventListener('click', () => {
 });
 ```
 
-첫 번째 탭($universityHistoryTab[0]) 클릭 시, $universityHistoryYHSE 내용은 표시되고 universityHistoryYS 내용은 숨겨집니다. 이 코드의 주요 기능은 사용자가 탭을 클릭하면 해당 탭에 대한 내용을 표시하고 다른 탭의 내용을 숨기는 것입니다.
+첫 번째 탭 클릭 시, HistoryYHSE 내용은 표시되고 HistoryYS 내용은 숨겨집니다. 이 코드의 주요 기능은 사용자가 탭을 클릭하면 해당 탭에 대한 내용을 표시하고 다른 탭의 내용을 숨기는 것입니다.
 
 <br>
 
@@ -170,7 +325,7 @@ visual();
 ```
 
 슬라이드를 변경하고 적절한 버튼을 활성화시키는 역할을 합니다.  
-_0.5s_: 슬라이드 전환 애니메이션 시간을 결정합니다.  
+0.5s: 슬라이드 전환 애니메이션 시간을 결정합니다.  
 left: 어떤 슬라이드가 화면에서 보여질지 결정합니다. left 값이 변경되면 각 슬라이드의 위치가 바뀌고 보여지는 슬라이드 갱신됩니다.  
 그 다음 활성화된 슬라이드 버튼의 상태를 변경합니다. 이전 버튼의 클래스는 remove를 사용해 on 클래스 제거하고, 현재 버튼은 add를 사용해 on 클래스를 추가합니다.
 
@@ -230,7 +385,7 @@ window.addEventListener('scroll', () => {
 });
 ```
 
-창(window) 스크롤 이벤트 따라 "scrollTop" 버튼이 나타나거나 사라집니다. 스크롤 이벤트가 일어나면 $researchAchievementAchBox 요소의 상단 위치값을 기준으로 맨 위로 이동하는 버튼을 표시 또는 숨깁니다.
+창(window) 스크롤 이벤트 따라 "scrollTop" 버튼이 나타나거나 사라집니다. 스크롤 이벤트가 일어나면 researchAchievementAchBox 요소의 상단 위치값을 기준으로 맨 위로 이동하는 버튼을 표시 또는 숨깁니다.
 
 <br>
 
@@ -314,7 +469,7 @@ $iacgPlazaMenu.forEach((item, idx) => {
 });
 ```
 
-iacgPlazaMenuMake 함수는 인수로 받은 타이틀에 따라 해당하는 데이터를 이용하여 리스트를 생성합니다. item.addEventListener를 사용하여 각 메뉴 항목에 클릭시 리스트를 출력하는 로직을 추가합니다.
+iacgPlazaMenuMake 함수는 인수로 받은 타이틀에 따라 해당하는 데이터를 이용하여 리스트를 생성합니다. 각 메뉴 항목에 클릭시 리스트를 출력하는 로직을 추가합니다.
 
 ### **리스트 이전/다음 버튼 클릭 이벤트 리스너**
 
@@ -332,3 +487,181 @@ $iacgPlazaMenuNext.addEventListener('click', e => {
 <br>
 
 </details>
+<details>
+<summary>대학/대학원</summary>
+
+<br>
+
+## 대학
+
+<br>
+
+### **데이터**
+
+```js
+let universityArr = [
+   /* 대학 데이터 */
+];
+```
+
+universityArr 배열에 대학별 관련 정보를 저장합니다. 이 배열에는 대학의 ID, 제목, 설명, 학부 정보 및 이미지 링크가 포함되어 있습니다.
+
+### **대학 리스트 생성 함수**
+
+```js
+const pageOpening = arr => {
+   arr.forEach(item => {
+      // DOM 요소 생성 및 클래스 추가
+      // DOM 요소에 데이터 바인딩 및 추가
+      // 학부 목록 생성
+      // DOM 요소를 페이지에 추가
+   });
+};
+```
+
+주어진 배열을 인수로 받아 대학 목록을 생성합니다. 각 대학별 요소를 생성하고 데이터를 바인딩한 다음 페이지에 추가합니다.
+
+### **스크롤 이벤트 처리**
+
+```js
+const scrollOpening = () => {
+   let windowHeight = window.innerHeight;
+   let screenTop = window.scrollY;
+   let screenBottom = screenTop + windowHeight - 250;
+   let $sections = getAll('.university .univ-list li');
+   $sections.forEach(item => {
+      if (screenBottom >= item.offsetTop) {
+         item.style.opacity = '1';
+         item.style.transform = 'translateY(0)';
+      }
+   });
+};
+```
+
+스크롤 이벤트를 처리하고 대학 목록의 각 섹션에 애니메이션 효과를 적용합니다. 사용자가 스크롤하면 해당 섹션이 화면에 표시되는 경우 애니메이션으로 표시합니다.
+
+### **대학 목록 생성 및 이벤트 리스너 등록**
+
+```js
+pageOpening(universityArr);
+scrollOpening();
+window.addEventListener('scroll', scrollOpening);
+```
+
+pageOpening 함수를 호출하여 페이지에 대학 목록을 생성하고, scrollOpening 함수를 호출하여 초기 애니메이션을 처리합니다. 또한 스크롤 이벤트 리스너를 등록하여 사용자의 스크롤 동작을 감지하고 애니메이션을 적용합니다.
+
+<br>
+
+## 대학원
+
+<br>
+
+### **대학원 페이지 배너 기능 구현**
+
+```js
+const graduatePageBanner = () => {
+   const $bannerPaging = getAll('.banner .paging li');
+   const $bannerImgs = getAll('.banner .banner-box li');
+   let bannerCurrentCnt = 0;
+   let bannerPrevCnt = 0;
+   let bannerIntervalID = null;
+   const bannerRolling = () => {
+      $bannerPaging[bannerPrevCnt].classList.remove('on');
+      $bannerPaging[bannerCurrentCnt].classList.add('on');
+      $bannerImgs[bannerPrevCnt].classList.remove('on');
+      $bannerImgs[bannerCurrentCnt].classList.add('on');
+      bannerPrevCnt = bannerCurrentCnt;
+   };
+   const bannerInterval = () => {
+      bannerCurrentCnt = bannerCurrentCnt >= $bannerPaging.length - 1 ? 0 : bannerCurrentCnt + 1;
+      bannerRolling();
+   };
+   $bannerPaging.forEach((item, idx) => {
+      item.addEventListener('click', () => {
+         bannerCurrentCnt = idx;
+         bannerRolling();
+         clearInterval(bannerIntervalID);
+         bannerIntervalID = setInterval(bannerInterval, 5000);
+      });
+   });
+   bannerIntervalID = setInterval(bannerInterval, 5000);
+};
+```
+
+이 함수는 배너의 rolling/sliding 기능과 pagination 동작을 설계하여 작동하게끔 합니다. 각 이미지 및 페이징 요소에 이벤트 리스너를 추가하여, 사용자가 페이징을 클릭할 때 이미지가 해당 순서대로 변경됩니다. 또한 페이징을 자동으로 변경하는 배너 인터벌을 지정합니다.
+
+### **대학원 페이지 공지사항 기능 구현**
+
+```js
+const graduatePageNotice = () => {
+   const $noticeMenu = getAll('.notice .menu-bar .menu-list li');
+   const $noticeContentBox = get('.graduate-page .notice .content-box');
+   let noticeArr = [
+      // 데이터 생성
+   ];
+   let noticeCurrentCnt = 0;
+   let noticePrevCnt = 0;
+   $noticeMenu.forEach((item, idx) => {
+      item.addEventListener('click', () => {
+         noticeCurrentCnt = idx;
+         $noticeMenu[noticePrevCnt].classList.remove('on');
+         $noticeMenu[noticeCurrentCnt].classList.add('on');
+         $noticeContentBox.innerHTML = '';
+         for (let i = 0; i < noticeArr[idx].content.length; i++) {
+            let tempLi = document.createElement('li');
+            let tempContent = document.createElement('strong');
+            let tempDate = document.createElement('em');
+            tempContent.textContent = noticeArr[idx].content[i];
+            tempDate.textContent = noticeArr[idx].date[i];
+            tempLi.append(tempContent, tempDate);
+            $noticeContentBox.append(tempLi);
+         }
+         noticePrevCnt = noticeCurrentCnt;
+      });
+   });
+};
+```
+
+공지사항의 각 카테고리를 클릭할 때 해당 카테고리의 내용을 동적으로 변경하는 기능을 제공합니다. 이벤트 리스너를 사용하여, 사용자가 메뉴 항목을 클릭할 때 공지사항의 내용이 해당 카테고리의 데이터로 업데이트됩니다.
+
+### **대학원 페이지 스크롤 이벤트 및 애니메이션 구현**
+
+```js
+const graduatePageCommon = () => {
+   const scrollOpening = () => {
+      let windowHeight = window.innerHeight;
+      let screenTop = window.scrollY;
+      let screenBottom = screenTop + windowHeight - 250;
+      let $sections = getAll('.con-box');
+      $sections.forEach(item => {
+         if (screenBottom >= item.offsetTop) {
+            item.style.opacity = '1';
+            item.style.transform = 'translateY(0)';
+         }
+      });
+   };
+   scrollOpening();
+   window.addEventListener('scroll', scrollOpening);
+};
+```
+
+스크롤 이벤트를 처리하고 페이지 섹션에 애니메이션 효과를 추가하는 기능을 구현합니다. 사용자가 스크롤하면 해당 섹션이 화면에 표시되었을 때 애니메이션 효과로 표시됩니다.
+
+<br>
+
+</details>
+
+<br>
+
+## 7. 프로젝트 기획 목적
+
+<br>
+
+본 프로젝트의 주요 목적은 기존 홈페이지를 바탕으로 HTML, CSS, JS 기술을 연습하기 위한 새로운 홈페이지를 제작하는 것입니다.  
+이를 통해 기술적 지식을 향상시키고 발전시킬 수 있는 기회를 제공하고자 합니다.  
+세부 목표는 다음과 같습니다.
+
+-  **HTML, CSS, JS 기술 연습**: 기존 홈페이지를 참고하여 웹 개발 기술을 연습하는데 초점을 맞춥니다. 이를 통해 웹 디자인 및 인터페이스 작성, DOM 조작, 이벤트 처리 등의 다양한 개념을 실습할 수 있습니다.
+-  **새로운 홈페이지 껍데기 제작**: 기존 홈페이지의 구조 및 디자인을 바탕으로 새로운 홈페이지 껍데기를 완성합니다. 연습 목적이므로, 모듈화와 같은 구조 개선은 배제하고 주로 외관과 동작에 집중할 수 있습니다.
+-  **기술적 역량 강화**: 본 프로젝트를 통해 HTML, CSS, JS와 같은 웹 개발 기술에 대한 지식 및 실력을 향상시킬 수 있습니다. 이를 바탕으로 추후 개발 프로젝트에서 보다 높은 퀄리티의 작업을 수행할 수 있게 됩니다.
+-  **포트폴리오 구축**: 프로젝트를 완료한 후에 이를 포트폴리오로 활용할 수 있습니다. 이를 통해 실제 웹 개발 업무 수행 능력을 입증하고, 개발자로서의 경쟁력을 강화할 수 있습니다.
