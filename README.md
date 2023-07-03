@@ -1,38 +1,36 @@
 # Team project ewha
 
-​
+<br>
 
 > html, Vanilla JS를 이용한 이화여대 마크업 홈페이지입니다.
 >
 > [배포링크](https://chugyeong.github.io/Ewha/pc/)
 >
 > 디자인 및 이미지 참고 [이화여대](https://www.ewha.ac.kr/ewha/index.do)
-> ​
+
+<br>
 
 ## 1. 기술 스택
 
-​
+<br>
 
--  HTML
--  CSS
--  Vanilla JS
-   ​
-   <br>
-   ​
+<img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white"><img src="https://img.shields.io/badge/css-1572B6?style=for-the-badge&logo=css3&logoColor=white"><img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
+
+<br>
 
 ## 2. 팀 소개
 
-​
+<br>
+
 | [김기철](https://github.com/habi-er) | [이원철](https://github.com/wonchuring/) | [정종우](https://github.com/honeypunch97) | [추경](https://github.com/ChuGyeong) |
-| :----------------------------------------------------------: | :------------------------------------------------: | :-----------------------------------------: | :---------------------------------------------: |
-|FE|FE|FE|FE|
-|로그인/회원가입|헤더/푸터|메인|학교연혁|
-|시설안내|공지사항|대학|총장실|
-|학생활동|이화뉴스|대학원|연구성과|
-|축제/이벤트|입학안내||산업협력|
+| :----------------------------------: | :--------------------------------------: | :---------------------------------------: | :----------------------------------: |
+|                  FE                  |                    FE                    |                    FE                     |                  FE                  |
+|           로그인/회원가입            |                헤더/푸터                 |                   메인                    |               학교연혁               |
+|               시설안내               |                 공지사항                 |                   대학                    |                총장실                |
+|               학생활동               |                 이화뉴스                 |                  대학원                   |               연구성과               |
+|             축제/이벤트              |                 입학안내                 |                                           |               산업협력               |
 
 <br>
-​
 
 ## 3. 폴더구조
 
@@ -96,6 +94,27 @@ EWha
 <br>
 
 <details>
+<summary>메인</summary>
+
+<br>
+
+```js
+
+```
+
+설명
+
+```js
+
+```
+
+설명
+
+<br>
+
+</details>
+
+<details>
 <summary>학교소개</summary>
 ​​
 <br>
@@ -103,6 +122,8 @@ EWha
 ## **학교연혁**
 
 <br>
+
+### **탭 클릭 이벤트 리스너 및 탭 내용 표시/숨김**
 
 ```js
 $universityHistoryTab.forEach(item => {
@@ -132,19 +153,14 @@ $universityHistoryTab[1].addEventListener('click', () => {
 
 <br>
 
+### **비주얼 이미지 슬라이드**
+
 ```js
 $presidentsSlide.style.transition = '0.5s';
 $presidentsSlide.style.left = `${presidentsOfficeCurrent * -100}%`;
 $presidentsOfficeBtn[presidentsOfficeOld].classList.remove('on');
 $presidentsOfficeBtn[presidentsOfficeCurrent].classList.add('on');
-```
 
-슬라이드를 변경하고 적절한 버튼을 활성화시키는 역할을 합니다.
-_0.5s_: 슬라이드 전환 애니메이션 시간을 결정합니다.
-left: 어떤 슬라이드가 화면에서 보여질지 결정합니다. "left 값이 변경되면 각 슬라이드의 위치가 바뀌고 보여지는 슬라이드 갱신됩니다.
-그 다음 활성화된 슬라이드 버튼의 상태를 변경합니다. 이전 버튼의 클래스는 remove를 사용해 on 클래스 제거하고, 현재 버튼은 add를 사용해 on 클래스를 추가합니다.
-
-```js
 if (presidentsOfficeCurrent < $presidentsSlideList.length - 1) {
    presidentsOfficeCurrent++;
 } else {
@@ -153,7 +169,14 @@ if (presidentsOfficeCurrent < $presidentsSlideList.length - 1) {
 visual();
 ```
 
-슬라이드를 자동으로 순환하게 합니다. 슬라이드 인덱스 값을 증가시키고, 마지막 슬라이드까지 진행한 경우 0으로 재설정되어 첫 번째 슬라이드로 돌아갑니다. 그리고 visual 함수를 호출해 슬라이드 변경이 수행됩니다.
+슬라이드를 변경하고 적절한 버튼을 활성화시키는 역할을 합니다.  
+_0.5s_: 슬라이드 전환 애니메이션 시간을 결정합니다.  
+left: 어떤 슬라이드가 화면에서 보여질지 결정합니다. left 값이 변경되면 각 슬라이드의 위치가 바뀌고 보여지는 슬라이드 갱신됩니다.  
+그 다음 활성화된 슬라이드 버튼의 상태를 변경합니다. 이전 버튼의 클래스는 remove를 사용해 on 클래스 제거하고, 현재 버튼은 add를 사용해 on 클래스를 추가합니다.
+
+슬라이드 인덱스 값을 증가시키고, 마지막 슬라이드까지 진행한 경우 0으로 재설정되어 첫 번째 슬라이드로 돌아갑니다. 그리고 visual 함수를 호출해 슬라이드 변경이 수행됩니다.
+
+### **이벤트 리스너 및 자동 롤링 설정**
 
 ```js
 $presidentsOfficeBtn.forEach((item, idx) => {
@@ -164,7 +187,7 @@ $presidentsOfficeBtn.forEach((item, idx) => {
 presidentsOfficeTimeID = setInterval(rolling, 3000);
 ```
 
-이벤트 리스너 및 자동 롤링 설정: 코드는 각 버튼에 클릭 이벤트 리스너를 설정해 수동으로 슬라이드를 변경하게 합니다. 클릭된 버튼의 인덱스 값을 바탕으로 슬라이드를 업데이트하고, 자동 롤링은 잠시 중지하고 다시 시작됩니다. 자동 롤링은 3초 간격으로 설정됩니다.
+해당 코드는 각 버튼에 클릭 이벤트 리스너를 설정해 수동으로 슬라이드를 변경하게 합니다. 클릭된 버튼의 인덱스 값을 바탕으로 슬라이드를 업데이트하고, 자동 롤링은 잠시 중지하고 다시 시작됩니다. 자동 롤링은 3초 간격으로 설정됩니다.
 
 <br>
 
@@ -177,6 +200,8 @@ presidentsOfficeTimeID = setInterval(rolling, 3000);
 ## 연구성과
 
 <br>
+
+### **이미지 리스트 클릭 이벤트 리스너**
 
 ```js
 $researchAchievementAchLi.forEach((item, idx) => {
@@ -194,6 +219,8 @@ $researchAchievementAchLi.forEach((item, idx) => {
 ```
 
 배열의 각 이미지 리스트에 클릭 이벤트 리스너를 추가하여 활성화 용도의 클래스(on) 및 배경 이미지를 변경합니다.
+
+### **스크롤 이벤트**
 
 ```js
 window.addEventListener('scroll', () => {
@@ -301,21 +328,6 @@ $iacgPlazaMenuNext.addEventListener('click', e => {
 ```
 
 리스트 이전 버튼과 다음 버튼에 이벤트 리스너를 추가하여 클릭할 때 리스트를 이전 또는 다음 항목으로 이동하게 합니다.
-
-### **스크롤 이벤트**
-
-```js
-window.addEventListener('scroll', e => {
-   const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-   if (scrollTop > 200) {
-      $quickMenu.classList.add('active');
-   } else {
-      $quickMenu.classList.remove('active');
-   }
-});
-```
-
-window 객체의 스크롤 이벤트 리스너를 추가하여 현재 스크롤 위치를 확인하고, 일정 위치를 넘어가면 Quick 메뉴에 "active" 클래스를 추가하여 애니메이션 효과가 실행되게 하며, 일정 위치 미만이면 "active" 클래스를 제거하여 애니메이션 효과가 사라지도록 합니다. 이렇게 좀 더 상세한 코드 부분을 추가하며 설명해 드렸습니다. 이를 통해 주어진 코드의 기능에 대해 이해하실 수 있기를 바랍니다.
 
 <br>
 
