@@ -87,7 +87,13 @@ EWha
 
 <br>
 
-## 6. 주요 기능
+![mainpage](./images/ewha1.gif)
+![subpage](./images/ewha2.gif)
+![subpage](./images/ewha3.gif)
+
+<br>
+
+## 6. 주요 **기능**
 
 <br>
 
