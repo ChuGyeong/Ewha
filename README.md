@@ -88,10 +88,8 @@ EWha
 <br>
 
 ![mainpage](./images/ewha1.gif)
-
 ![subpage](./images/ewha2.gif)
-
-![subpage](./images/ehwa3.gif)
+![subpage](./images/ewha3.gif)
 
 <br>
 
