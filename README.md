@@ -6,6 +6,8 @@
 >
 > [배포링크](https://chugyeong.github.io/Ewha/pc/)
 >
+> [기획서](https://chugyeong.github.io/Ewha/worklist)
+>
 > 디자인 및 이미지 참고 [이화여대](https://www.ewha.ac.kr/ewha/index.do)
 
 <br>
@@ -22,13 +24,14 @@
 
 <br>
 
-| [김기철](https://github.com/habi-er) | [이원철](https://github.com/wonchuring/) | [정종우](https://github.com/honeypunch97) | [추경](https://github.com/ChuGyeong) |
-| :----------------------------------: | :--------------------------------------: | :---------------------------------------: | :----------------------------------: |
-|                  FE                  |                    FE                    |                    FE                     |                  FE                  |
-|           로그인/회원가입            |                헤더/푸터                 |                   메인                    |               학교연혁               |
-|               시설안내               |                 공지사항                 |                   대학                    |                총장실                |
-|               학생활동               |                 이화뉴스                 |                  대학원                   |               연구성과               |
-|             축제/이벤트              |                 입학안내                 |                                           |               산업협력               |
+|                            [김기철](https://github.com/habi-er)                             |                          [이원철](https://github.com/wonchuring/)                           |                         [정종우](https://github.com/honeypunch97)                          |                            [추경](https://github.com/ChuGyeong)                             |
+| :-----------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------: |
+| <img src="https://avatars.githubusercontent.com/u/133613789?v=4" width="100" height="100"/> | <img src="https://avatars.githubusercontent.com/u/126632198?v=4" width="100" height="100"/> | <img src="https://avatars.githubusercontent.com/u/57937641?v=4" width="100" height="100"/> | <img src="https://avatars.githubusercontent.com/u/121862169?v=4" width="100" height="100"/> |
+|                                        **Frontend**                                         |                                        **Frontend**                                         |                                        **Frontend**                                        |                                        **Frontend**                                         |
+|                                       로그인/회원가입                                       |                                        header/footer                                        |                                            메인                                            |                                          학교연혁                                           |
+|                                          시설안내                                           |                                          공지사항                                           |                                            대학                                            |                                           총장실                                            |
+|                                          학생활동                                           |                                          이화뉴스                                           |                                           대학원                                           |                                          연구성과                                           |
+|                                         축제/이벤트                                         |                                          입학안내                                           |                                                                                            |                                          산업협력                                           |
 
 <br>
 
@@ -95,6 +98,7 @@ EWha
 
 <details>
 <summary>메인</summary>
+
 <br>
 
 ### **배너 슬라이드 쇼**
@@ -270,6 +274,73 @@ window.addEventListener('scroll', () => {
 </details>
 
 <details>
+<summary>header/footer</summary>
+
+<br>
+
+### **header 마우스 이벤트 리스너**
+
+```js
+$gnbChild.forEach((item, idx) => {
+   item.addEventListener('mouseenter', e => {
+      $gnbChildA[idx].style.color = '#A4B8AF';
+   });
+   item.addEventListener('mouseleave', e => {
+      $gnbChildA[idx].style.color = '#fff';
+   });
+});
+
+$gnbLi.forEach(liItem => {
+   liItem.addEventListener('mouseenter', e => {
+      $bottomHeader.classList.add('on');
+   });
+   liItem.addEventListener('mouseleave', e => {
+      $bottomHeader.classList.remove('on');
+   });
+});
+```
+
+해당 코드는 각 배열의 각 요소에 마우스 이벤트 리스너를 등록하여 해당 요소에 마우스가 진입하거나 벗어났을 때 텍스트 색상을 변경하는 기능과 클래스를 추가하거나 제거하는 기능을 구현합니다.
+
+### **스크롤 이벤트 처리**
+
+```js
+$topBtn.addEventListener('click', e => {
+   window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+```
+
+버튼 클릭 시 페이지를 맨 위로 스크롤하는 기능을 구현하였습니다.
+
+### **버튼 클릭 이벤트 리스너 및 내용 펼침/접힘**
+
+```js
+$closeBtn.addEventListener('click', e => {
+   $topFooter.classList.toggle('folded');
+   if ($topFooter.classList.contains('folded')) {
+      $topH.style.transform = 'translateY(0)';
+      $closeBtni.classList.replace('xi-angle-down', 'xi-angle-up');
+      $topHide.forEach(item => {
+         item.style.display = 'none';
+      });
+   } else {
+      $closeBtni.classList.replace('xi-angle-up', 'xi-angle-down');
+      $topHide.forEach(item => {
+         item.style.display = 'block';
+         $topH.style.transform = 'translateY(-30px)';
+         item.animate([{ opacity: 0 }, { opacity: 1 }], 500);
+      });
+   }
+});
+```
+
+버튼 클릭 시 $topFooter 요소의 클래스를 토글하고, 해당 클래스에 따라 다양한 스타일 변경과 애니메이션을 수행합니다. 이를 통해 요소의 상태에 따라 펼침/접힘 효과를 적용하거나 동적인 변화를 나타낼 수 있습니다.
+
+<br>
+
+</details>
+
+<details>
 <summary>학교소개</summary>
 ​​
 <br>
@@ -347,146 +418,7 @@ presidentsOfficeTimeID = setInterval(rolling, 3000);
 <br>
 
 </details>
-<details>
-<summary>연구산학</summary>
-​
-<br>
 
-## 연구성과
-
-<br>
-
-### **이미지 리스트 클릭 이벤트 리스너**
-
-```js
-$researchAchievementAchLi.forEach((item, idx) => {
-   item.addEventListener('click', () => {
-      $researchAchievementAchLi.forEach(AchLi => {
-         AchLi.classList.remove('on');
-         AchLi.style.backgroundImage = 'none';
-      });
-      item.classList.add('on');
-      $researchAchievementAchLiImg[
-         idx
-      ].style.backgroundImage = `url(../images/research_industry/research_achievement/research_achievement_${researchAchievementAchImgType[idx]})`;
-   });
-});
-```
-
-배열의 각 이미지 리스트에 클릭 이벤트 리스너를 추가하여 활성화 용도의 클래스(on) 및 배경 이미지를 변경합니다.
-
-### **스크롤 이벤트**
-
-```js
-window.addEventListener('scroll', () => {
-   window.scrollY >= $researchAchievementAchBox.offsetTop
-      ? ($researchAchievementTopBtn.style.display = 'block')
-      : ($researchAchievementTopBtn.style.display = 'none');
-});
-```
-
-창(window) 스크롤 이벤트 따라 "scrollTop" 버튼이 나타나거나 사라집니다. 스크롤 이벤트가 일어나면 researchAchievementAchBox 요소의 상단 위치값을 기준으로 맨 위로 이동하는 버튼을 표시 또는 숨깁니다.
-
-<br>
-
-## 산업협력
-
-<br>
-
-### **이미지 롤링 슬라이더**
-
-```js
-const iacgVisRolling = () => {
-   if (iacgVisCnt >= iacgVisLength) {
-      iacgVisCnt = 0;
-   }
-   $iacgVisList.forEach((item, idx) => {
-      item.style.display = 'none';
-   });
-   $iacgVisList[iacgVisCnt].style.display = 'block';
-};
-
-setInterval(() => {
-   iacgVisCnt++;
-   iacgVisRolling();
-}, 3000);
-```
-
-iacgVisRolling 함수는 이미지 롤링을 담당하는 함수입니다. setInterval 사용하여 3초마다 한 번씩 자동으로 이동합니다.
-
-### **버튼 클릭 이벤트 리스너**
-
-```js
-$iacgVisBtnPrev.addEventListener('click', () => {
-   iacgVisCnt--;
-   if (iacgVisCnt < 0) {
-      iacgVisCnt = iacgVisLength - 1;
-   }
-   iacgVisRolling();
-});
-
-$iacgVisBtnNext.addEventListener('click', () => {
-   iacgVisCnt++;
-   if (iacgVisCnt >= iacgVisLength) {
-      iacgVisCnt = 0;
-   }
-   iacgVisRolling();
-});
-
-$iacgVisBtnPause.addEventListener('click', () => {
-   if (iacgVisPaused) {
-      iacVisTimeID = setInterval(() => {
-         iacgVisCnt++;
-         iacgVisRolling();
-      }, 3000);
-      $iacgVisBtnPause.innerText = '일시정지';
-      iacgVisPaused = false;
-   } else {
-      clearInterval(iacVisTimeID);
-      $iacgVisBtnPause.innerText = '재생';
-      iacgVisPaused = true;
-   }
-});
-```
-
-이전 버튼과 다음 버튼은 이미지를 이전, 다음으로 이동하게 하며, 재생/일시정지 버튼은 이미지 롤링의 자동 이동을 시작/중지합니다.
-
-### **메뉴 선택에 따른 리스트 출력**
-
-```js
-const iacgPlazaMenuMake = title => {
-   let html = '';
-   iacgData[title].forEach(item => {
-      html += `<li>${item}</li>`;
-   });
-   $iacgPlazaList.innerHTML = html;
-};
-
-$iacgPlazaMenu.forEach((item, idx) => {
-   item.addEventListener('click', e => {
-      iacgPlazaMenuMake(e.target.innerText);
-   });
-});
-```
-
-iacgPlazaMenuMake 함수는 인수로 받은 타이틀에 따라 해당하는 데이터를 이용하여 리스트를 생성합니다. 각 메뉴 항목에 클릭시 리스트를 출력하는 로직을 추가합니다.
-
-### **리스트 이전/다음 버튼 클릭 이벤트 리스너**
-
-```js
-$iacgPlazaMenuPrev.addEventListener('click', e => {
-   // (생략) 이전 버튼 클릭 로직
-});
-$iacgPlazaMenuNext.addEventListener('click', e => {
-   // (생략) 다음 버튼 클릭 로직
-});
-```
-
-리스트 이전 버튼과 다음 버튼에 이벤트 리스너를 추가하여 클릭할 때 리스트를 이전 또는 다음 항목으로 이동하게 합니다.
-
-<br>
-
-</details>
 <details>
 <summary>대학/대학원</summary>
 
@@ -651,6 +583,225 @@ const graduatePageCommon = () => {
 
 </details>
 <details>
+<summary>연구산학</summary>
+​
+<br>
+
+## 연구성과
+
+<br>
+
+### **이미지 리스트 클릭 이벤트 리스너**
+
+```js
+$researchAchievementAchLi.forEach((item, idx) => {
+   item.addEventListener('click', () => {
+      $researchAchievementAchLi.forEach(AchLi => {
+         AchLi.classList.remove('on');
+         AchLi.style.backgroundImage = 'none';
+      });
+      item.classList.add('on');
+      $researchAchievementAchLiImg[
+         idx
+      ].style.backgroundImage = `url(../images/research_industry/research_achievement/research_achievement_${researchAchievementAchImgType[idx]})`;
+   });
+});
+```
+
+배열의 각 이미지 리스트에 클릭 이벤트 리스너를 추가하여 활성화 용도의 클래스(on) 및 배경 이미지를 변경합니다.
+
+### **스크롤 이벤트 처리**
+
+```js
+window.addEventListener('scroll', () => {
+   window.scrollY >= $researchAchievementAchBox.offsetTop
+      ? ($researchAchievementTopBtn.style.display = 'block')
+      : ($researchAchievementTopBtn.style.display = 'none');
+});
+```
+
+창(window) 스크롤 이벤트 따라 "scrollTop" 버튼이 나타나거나 사라집니다. 스크롤 이벤트가 일어나면 researchAchievementAchBox 요소의 상단 위치값을 기준으로 맨 위로 이동하는 버튼을 표시 또는 숨깁니다.
+
+<br>
+
+## 산업협력
+
+<br>
+
+### **이미지 롤링 슬라이더**
+
+```js
+const iacgVisRolling = () => {
+   if (iacgVisCnt >= iacgVisLength) {
+      iacgVisCnt = 0;
+   }
+   $iacgVisList.forEach((item, idx) => {
+      item.style.display = 'none';
+   });
+   $iacgVisList[iacgVisCnt].style.display = 'block';
+};
+
+setInterval(() => {
+   iacgVisCnt++;
+   iacgVisRolling();
+}, 3000);
+```
+
+iacgVisRolling 함수는 이미지 롤링을 담당하는 함수입니다. setInterval 사용하여 3초마다 한 번씩 자동으로 이동합니다.
+
+### **버튼 클릭 이벤트 리스너**
+
+```js
+$iacgVisBtnPrev.addEventListener('click', () => {
+   iacgVisCnt--;
+   if (iacgVisCnt < 0) {
+      iacgVisCnt = iacgVisLength - 1;
+   }
+   iacgVisRolling();
+});
+
+$iacgVisBtnNext.addEventListener('click', () => {
+   iacgVisCnt++;
+   if (iacgVisCnt >= iacgVisLength) {
+      iacgVisCnt = 0;
+   }
+   iacgVisRolling();
+});
+
+$iacgVisBtnPause.addEventListener('click', () => {
+   if (iacgVisPaused) {
+      iacVisTimeID = setInterval(() => {
+         iacgVisCnt++;
+         iacgVisRolling();
+      }, 3000);
+      $iacgVisBtnPause.innerText = '일시정지';
+      iacgVisPaused = false;
+   } else {
+      clearInterval(iacVisTimeID);
+      $iacgVisBtnPause.innerText = '재생';
+      iacgVisPaused = true;
+   }
+});
+```
+
+이전 버튼과 다음 버튼은 이미지를 이전, 다음으로 이동하게 하며, 재생/일시정지 버튼은 이미지 롤링의 자동 이동을 시작/중지합니다.
+
+### **메뉴 선택에 따른 리스트 출력**
+
+```js
+const iacgPlazaMenuMake = title => {
+   let html = '';
+   iacgData[title].forEach(item => {
+      html += `<li>${item}</li>`;
+   });
+   $iacgPlazaList.innerHTML = html;
+};
+
+$iacgPlazaMenu.forEach((item, idx) => {
+   item.addEventListener('click', e => {
+      iacgPlazaMenuMake(e.target.innerText);
+   });
+});
+```
+
+iacgPlazaMenuMake 함수는 인수로 받은 타이틀에 따라 해당하는 데이터를 이용하여 리스트를 생성합니다. 각 메뉴 항목에 클릭시 리스트를 출력하는 로직을 추가합니다.
+
+### **리스트 이전/다음 버튼 클릭 이벤트 리스너**
+
+```js
+$iacgPlazaMenuPrev.addEventListener('click', e => {
+   // (생략) 이전 버튼 클릭 로직
+});
+$iacgPlazaMenuNext.addEventListener('click', e => {
+   // (생략) 다음 버튼 클릭 로직
+});
+```
+
+리스트 이전 버튼과 다음 버튼에 이벤트 리스너를 추가하여 클릭할 때 리스트를 이전 또는 다음 항목으로 이동하게 합니다.
+
+<br>
+
+</details>
+<details>
+<summary>대학소식</summary>
+
+<br>
+
+## 공지사항
+
+<br>
+
+### **클릭 이벤트 리스너**
+
+```js
+$pageBtn.forEach((item, idx) => {
+   item.addEventListener('click', e => {
+      e.preventDefault();
+      for (let i = 0; i < $pageBtn.length; i++) {
+         $pageBtn[i].classList.remove('on');
+      }
+      e.target.classList.add('on');
+      $hits.forEach(hitsItem => {
+         hitsItem.innerHTML = Math.floor(Math.random() * 1000);
+      });
+   });
+});
+```
+
+배열의 각 요소에 클릭 이벤트 리스너를 등록하여 클릭된 요소에 "on" 클래스를 추가하고, 다른 요소들에서는 "on" 클래스를 제거합니다. 또한, $hits 배열의 각 요소의 내용을 랜덤한 값으로 변경하여 클릭된 요소를 시각적으로 강조하고, 데이터를 동적으로 업데이트할 수 있도록 하였습니다.
+
+<br>
+
+## 뉴스
+
+<br>
+
+### **배열 순서 랜덤**
+
+```js
+function shuffle() {
+   for (let i = $newsItems.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [$newsItems[i], $newsItems[j]] = [$newsItems[j], $newsItems[i]];
+   }
+   $newsList.innerHTML = '';
+   $newsItems.forEach(item => $newsList.appendChild(item));
+}
+```
+
+shuffle 함수를 정의하여 배열 요소의 순서를 랜덤하게 변경하고, $newsList 요소에 적용하여 화면에 랜덤한 순서로 데이터를 표시합니다.
+
+### **클릭 이벤트 리스너**
+
+```js
+$pageBtn.forEach(item => {
+   item.addEventListener('click', e => {
+      e.preventDefault();
+      for (let i = 0; i < $pageBtn.length; i++) {
+         $pageBtn[i].classList.remove('on');
+      }
+      e.target.classList.add('on');
+      shuffle();
+   });
+});
+$newsMenu.forEach(item => {
+   item.addEventListener('click', e => {
+      for (let i = 0; i < $newsMenu.length; i++) {
+         $newsMenu[i].classList.remove('on');
+      }
+      e.target.classList.add('on');
+      shuffle();
+   });
+});
+```
+
+$pageBtn 배열과 $newsMenu 배열의 각 요소에 클릭 이벤트 리스너를 등록합니다. 클릭 시 "on" 클래스를 관리하여 활성화 상태를 표시하고, shuffle() 함수를 호출하여 배열의 순서를 랜덤하게 변경합니다. 이를 통해 페이지 버튼과 뉴스 메뉴를 클릭할 때마다 활성화 상태가 변경되고, 데이터가 랜덤하게 표시될 수 있습니다.
+
+<br>
+
+</details>
+
+<details>
 <summary>대학생활</summary>
 
 <br>
@@ -660,67 +811,86 @@ const graduatePageCommon = () => {
 <br>
 
 ### **팝업 구성 요소 생성**
+
 ```javascript
-$studentActivitiesBoxLiPopUp = document.createElement("div");
-$studentActivitiesBoxLiPopUpTitleText = document.createElement("p");
-$studentActivitiesBoxLiPopUpName = document.createElement("strong");
-$studentActivitiesBoxLiPopUpMainText = document.createElement("p");
-$studentActivitiesBoxLiPopUpMoreLink = document.createElement("a");
+$studentActivitiesBoxLiPopUp = document.createElement('div');
+$studentActivitiesBoxLiPopUpTitleText = document.createElement('p');
+$studentActivitiesBoxLiPopUpName = document.createElement('strong');
+$studentActivitiesBoxLiPopUpMainText = document.createElement('p');
+$studentActivitiesBoxLiPopUpMoreLink = document.createElement('a');
 ```
+
 학생 활동 팝업을 구성하는 요소들을 생성하며 필요한 속성과 클래스를 설정합니다.
+
 ### **팝업에 학생 정보 채우기**
+
 ```javascript
 $studentActivitiesBoxLiPopUpTitleText.innerHTML = studentActivitiesPopUpData[studentActivitiesCnt].popUpTitleText;
 $studentActivitiesBoxLiPopUpName.innerHTML = studentActivitiesPopUpData[studentActivitiesCnt].popUpStudentName;
 $studentActivitiesBoxLiPopUpMainText.innerHTML = studentActivitiesPopUpData[studentActivitiesCnt].popUpMainText;
 ```
+
 생성된 팝업 요소에 학생 정보를 채우기 위해 데이터를 가져와 설정합니다.
+
 ### **자세히 보기 링크 동작 막기**
+
 ```javascript
-$studentActivitiesBoxLiPopUpMoreLink.addEventListener("click", e => {
-  e.preventDefault();
+$studentActivitiesBoxLiPopUpMoreLink.addEventListener('click', e => {
+   e.preventDefault();
 });
 ```
+
 팝업 내부에 있는 "자세히 보기" 링크를 클릭하면 페이지 이동 등의 기본 동작을 막도록 이벤트 리스너를 추가합니다.
 
 ### **학생 활동 이미지의 카운트 제한**
+
 ```javascript
 if (makeStudentImgCnt === 36) return 0;
 ```
+
 코드 시작 부분에서, `makeStudentImgCnt`의 최댓값을 36으로 제한하여 이미지 카운트가 이를 초과하지 않도록 합니다.
+
 ### **학생 활동 이미지 리스트 생성**
+
 ```javascript
 for (let i = makeStudentImgCnt; i < makeStudentImgCnt + 9; i++) {
   ...
 }
 ```
+
 for문을 사용하여 학생 활동 리스트를 9개씩 생성합니다. 이 때, 각 학생 항목에 이미지, 이름, 스토리, 이벤트 리스너들을 생성하여 추가합니다.
+
 ### **마우스 포인터 이벤트 처리**
+
 ```javascript
-$studentActivitiesBoxLi.addEventListener("mouseenter", e => {
-  e.currentTarget.children[1].style.display = "flex";
+$studentActivitiesBoxLi.addEventListener('mouseenter', e => {
+   e.currentTarget.children[1].style.display = 'flex';
 });
-$studentActivitiesBoxLi.addEventListener("mouseleave", e => {
-  e.currentTarget.children[1].style.display = "none";
+$studentActivitiesBoxLi.addEventListener('mouseleave', e => {
+   e.currentTarget.children[1].style.display = 'none';
 });
 ```
+
 각 학생의 이미지에 마우스 포인터가 올라갔을 때 이름과 스토리 정보를 보여주기 위해, 이벤트 리스너를 추가합니다.
+
 ### **학생 이미지 클릭 이벤트 처리**
+
 ```javascript
-$studentActivitiesBoxLi.addEventListener("click", e => {
-  if (e.currentTarget.lastElementChild.classList.contains("on")) {
-    e.currentTarget.lastElementChild.classList.remove("on");
-  } else {
-    if (selectedActivitiesBoxLiPopUp !== null) {
-      selectedActivitiesBoxLiPopUp.classList.remove("on");
-      selectedActivitiesBoxLiPopUp = null;
-      popupBanner(e);
-    } else {
-      popupBanner(e);
-    }
-  }
+$studentActivitiesBoxLi.addEventListener('click', e => {
+   if (e.currentTarget.lastElementChild.classList.contains('on')) {
+      e.currentTarget.lastElementChild.classList.remove('on');
+   } else {
+      if (selectedActivitiesBoxLiPopUp !== null) {
+         selectedActivitiesBoxLiPopUp.classList.remove('on');
+         selectedActivitiesBoxLiPopUp = null;
+         popupBanner(e);
+      } else {
+         popupBanner(e);
+      }
+   }
 });
 ```
+
 학생 이미지를 클릭하면 팝업창을 보여주고, 이미 보이는 팝업창이 있다면 숨기는 기능을 추가합니다. 또한 팝업창의 위치가 이미지에 따라 다르도록 설정합니다.
 
 <br>
@@ -730,65 +900,74 @@ $studentActivitiesBoxLi.addEventListener("click", e => {
 <br>
 
 ### **시설 정보 글자들의 수평 애니메이션**
+
 ```javascript
 facilityInformationSize = parseInt(getComputedStyle($facilityInformationBgTextList).width) * -2;
 setInterval(() => {
-  facilityInformationLeftX = parseInt(getComputedStyle($facilityInformationBgText).left);
-  if (facilityInformationLeftX <= facilityInformationSize) {
-    $facilityInformationBgText.style.left = "0px";
-    facilityInformationTextX = 0;
-  } else {
-    facilityInformationTextX -= facilityInformationStep;
-    $facilityInformationBgText.style.left = `${facilityInformationTextX}px`;
-  }
+   facilityInformationLeftX = parseInt(getComputedStyle($facilityInformationBgText).left);
+   if (facilityInformationLeftX <= facilityInformationSize) {
+      $facilityInformationBgText.style.left = '0px';
+      facilityInformationTextX = 0;
+   } else {
+      facilityInformationTextX -= facilityInformationStep;
+      $facilityInformationBgText.style.left = `${facilityInformationTextX}px`;
+   }
 }, 30);
 ```
+
 시설 정보 텍스트가 일정한 속도로 좌측으로 움직이며 마지막 텍스트가 사라지면 처음 위치로 되돌아오는 애니메이션을 구현합니다.
+
 ### **스크롤에 따른 시설 정보 이미지 애니메이션 적용**
+
 ```javascript
 const facilityInformationSlider = () => {
-  facilityInformationImg.forEach(item => {
-    const viewportBottom = window.innerHeight + window.scrollY;
-    const imageHalfBottom = item.offsetTop + item.offsetHeight / 2;
-    const isHalfShown = viewportBottom > imageHalfBottom;
-    if (isHalfShown) item.classList.add("on");
-  });
+   facilityInformationImg.forEach(item => {
+      const viewportBottom = window.innerHeight + window.scrollY;
+      const imageHalfBottom = item.offsetTop + item.offsetHeight / 2;
+      const isHalfShown = viewportBottom > imageHalfBottom;
+      if (isHalfShown) item.classList.add('on');
+   });
 };
 facilityInformationSlider();
-window.addEventListener("scroll", facilityInformationSlider);
+window.addEventListener('scroll', facilityInformationSlider);
 ```
+
 시설 정보 이미지를 스크롤에 따라 애니메이션되도록 설정합니다. 이미지의 절반 위치가 보이는 시점에서 애니메이션을 활성화합니다.
 
 <br>
 
-## 축제 / 이벤트 
+## 축제/이벤트
 
 <br>
 
 ### **비디오 팝업 생성**
+
 ```javascript
 const festivalEventMakeVideo = () => {
-  $festivalEventVideoPopupIframe.setAttribute("src", festivalEventVideoData[festivalEventCnt].videoSrc);
-  $festivalEventVideoPopupIframe.setAttribute("title", festivalEventVideoData[festivalEventCnt].videoTitle);
+   $festivalEventVideoPopupIframe.setAttribute('src', festivalEventVideoData[festivalEventCnt].videoSrc);
+   $festivalEventVideoPopupIframe.setAttribute('title', festivalEventVideoData[festivalEventCnt].videoTitle);
 };
 ```
+
 `festivalEventMakeVideo` 함수는 비디오 팝업에 내용을 채워 넣습니다. 각 이벤트에 해당하는 비디오 정보를 가져와 설정합니다.
 
 ### **이벤트 리스트 클릭 시 팝업 및 이벤트 등록**
+
 ```javascript
 $festivalEventListImg.forEach((item, idx) => {
-  item.addEventListener("click", () => {
-    festivalEventCnt = idx;
-    festivalEventMakeVideo();
-    $festivalEventBgForPopup.classList.add("on");
-    $festivalEventVideoPopup.classList.add("on");
-    $festivalEventBgForPopup.addEventListener("click", e => {
-      e.currentTarget.classList.remove("on");
-      $festivalEventVideoPopup.classList.remove("on");
-    });
-  });
+   item.addEventListener('click', () => {
+      festivalEventCnt = idx;
+      festivalEventMakeVideo();
+      $festivalEventBgForPopup.classList.add('on');
+      $festivalEventVideoPopup.classList.add('on');
+      $festivalEventBgForPopup.addEventListener('click', e => {
+         e.currentTarget.classList.remove('on');
+         $festivalEventVideoPopup.classList.remove('on');
+      });
+   });
 });
 ```
+
 이벤트 리스트를 순회하며 각 아이템에 클릭 이벤트를 추가합니다. 이벤트가 발생하면 해당 이벤트의 비디오 팝업을 생성하고, 팝업 외부 클릭 시 팝업을 닫도록 설정합니다.
 
 <br>
