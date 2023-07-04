@@ -650,6 +650,150 @@ const graduatePageCommon = () => {
 <br>
 
 </details>
+<details>
+<summary>대학생활</summary>
+
+<br>
+
+## 학생활동
+
+<br>
+
+### **팝업 구성 요소 생성**
+```javascript
+$studentActivitiesBoxLiPopUp = document.createElement("div");
+$studentActivitiesBoxLiPopUpTitleText = document.createElement("p");
+$studentActivitiesBoxLiPopUpName = document.createElement("strong");
+$studentActivitiesBoxLiPopUpMainText = document.createElement("p");
+$studentActivitiesBoxLiPopUpMoreLink = document.createElement("a");
+```
+학생 활동 팝업을 구성하는 요소들을 생성하며 필요한 속성과 클래스를 설정합니다.
+### **팝업에 학생 정보 채우기**
+```javascript
+$studentActivitiesBoxLiPopUpTitleText.innerHTML = studentActivitiesPopUpData[studentActivitiesCnt].popUpTitleText;
+$studentActivitiesBoxLiPopUpName.innerHTML = studentActivitiesPopUpData[studentActivitiesCnt].popUpStudentName;
+$studentActivitiesBoxLiPopUpMainText.innerHTML = studentActivitiesPopUpData[studentActivitiesCnt].popUpMainText;
+```
+생성된 팝업 요소에 학생 정보를 채우기 위해 데이터를 가져와 설정합니다.
+### **자세히 보기 링크 동작 막기**
+```javascript
+$studentActivitiesBoxLiPopUpMoreLink.addEventListener("click", e => {
+  e.preventDefault();
+});
+```
+팝업 내부에 있는 "자세히 보기" 링크를 클릭하면 페이지 이동 등의 기본 동작을 막도록 이벤트 리스너를 추가합니다.
+
+### **학생 활동 이미지의 카운트 제한**
+```javascript
+if (makeStudentImgCnt === 36) return 0;
+```
+코드 시작 부분에서, `makeStudentImgCnt`의 최댓값을 36으로 제한하여 이미지 카운트가 이를 초과하지 않도록 합니다.
+### **학생 활동 이미지 리스트 생성**
+```javascript
+for (let i = makeStudentImgCnt; i < makeStudentImgCnt + 9; i++) {
+  ...
+}
+```
+for문을 사용하여 학생 활동 리스트를 9개씩 생성합니다. 이 때, 각 학생 항목에 이미지, 이름, 스토리, 이벤트 리스너들을 생성하여 추가합니다.
+### **마우스 포인터 이벤트 처리**
+```javascript
+$studentActivitiesBoxLi.addEventListener("mouseenter", e => {
+  e.currentTarget.children[1].style.display = "flex";
+});
+$studentActivitiesBoxLi.addEventListener("mouseleave", e => {
+  e.currentTarget.children[1].style.display = "none";
+});
+```
+각 학생의 이미지에 마우스 포인터가 올라갔을 때 이름과 스토리 정보를 보여주기 위해, 이벤트 리스너를 추가합니다.
+### **학생 이미지 클릭 이벤트 처리**
+```javascript
+$studentActivitiesBoxLi.addEventListener("click", e => {
+  if (e.currentTarget.lastElementChild.classList.contains("on")) {
+    e.currentTarget.lastElementChild.classList.remove("on");
+  } else {
+    if (selectedActivitiesBoxLiPopUp !== null) {
+      selectedActivitiesBoxLiPopUp.classList.remove("on");
+      selectedActivitiesBoxLiPopUp = null;
+      popupBanner(e);
+    } else {
+      popupBanner(e);
+    }
+  }
+});
+```
+학생 이미지를 클릭하면 팝업창을 보여주고, 이미 보이는 팝업창이 있다면 숨기는 기능을 추가합니다. 또한 팝업창의 위치가 이미지에 따라 다르도록 설정합니다.
+
+<br>
+
+## 시설 안내
+
+<br>
+
+### **시설 정보 글자들의 수평 애니메이션**
+```javascript
+facilityInformationSize = parseInt(getComputedStyle($facilityInformationBgTextList).width) * -2;
+setInterval(() => {
+  facilityInformationLeftX = parseInt(getComputedStyle($facilityInformationBgText).left);
+  if (facilityInformationLeftX <= facilityInformationSize) {
+    $facilityInformationBgText.style.left = "0px";
+    facilityInformationTextX = 0;
+  } else {
+    facilityInformationTextX -= facilityInformationStep;
+    $facilityInformationBgText.style.left = `${facilityInformationTextX}px`;
+  }
+}, 30);
+```
+시설 정보 텍스트가 일정한 속도로 좌측으로 움직이며 마지막 텍스트가 사라지면 처음 위치로 되돌아오는 애니메이션을 구현합니다.
+### **스크롤에 따른 시설 정보 이미지 애니메이션 적용**
+```javascript
+const facilityInformationSlider = () => {
+  facilityInformationImg.forEach(item => {
+    const viewportBottom = window.innerHeight + window.scrollY;
+    const imageHalfBottom = item.offsetTop + item.offsetHeight / 2;
+    const isHalfShown = viewportBottom > imageHalfBottom;
+    if (isHalfShown) item.classList.add("on");
+  });
+};
+facilityInformationSlider();
+window.addEventListener("scroll", facilityInformationSlider);
+```
+시설 정보 이미지를 스크롤에 따라 애니메이션되도록 설정합니다. 이미지의 절반 위치가 보이는 시점에서 애니메이션을 활성화합니다.
+
+<br>
+
+## 축제 / 이벤트 
+
+<br>
+
+### **비디오 팝업 생성**
+```javascript
+const festivalEventMakeVideo = () => {
+  $festivalEventVideoPopupIframe.setAttribute("src", festivalEventVideoData[festivalEventCnt].videoSrc);
+  $festivalEventVideoPopupIframe.setAttribute("title", festivalEventVideoData[festivalEventCnt].videoTitle);
+};
+```
+`festivalEventMakeVideo` 함수는 비디오 팝업에 내용을 채워 넣습니다. 각 이벤트에 해당하는 비디오 정보를 가져와 설정합니다.
+
+### **이벤트 리스트 클릭 시 팝업 및 이벤트 등록**
+```javascript
+$festivalEventListImg.forEach((item, idx) => {
+  item.addEventListener("click", () => {
+    festivalEventCnt = idx;
+    festivalEventMakeVideo();
+    $festivalEventBgForPopup.classList.add("on");
+    $festivalEventVideoPopup.classList.add("on");
+    $festivalEventBgForPopup.addEventListener("click", e => {
+      e.currentTarget.classList.remove("on");
+      $festivalEventVideoPopup.classList.remove("on");
+    });
+  });
+});
+```
+이벤트 리스트를 순회하며 각 아이템에 클릭 이벤트를 추가합니다. 이벤트가 발생하면 해당 이벤트의 비디오 팝업을 생성하고, 팝업 외부 클릭 시 팝업을 닫도록 설정합니다.
+
+<br>
+
+</details>
 
 <br>
 
